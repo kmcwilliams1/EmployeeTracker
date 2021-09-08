@@ -53,18 +53,21 @@ const initialPrompt = () => {
             }
         })
 }
+
 const viewalldepartments = () => {
     db.query('SELECT * FROM department', function (err, results) {
         console.table(results);
         initialPrompt();
     });
 }
+
 const viewallroles = () => {
     db.query('SELECT * FROM roles', function (err, results) {
         console.table(results);
         initialPrompt();
     });
 }
+
 const viewallemployees = () => {
     db.query('SELECT * FROM employee', function (err, results) {
         console.table(results);
@@ -79,7 +82,7 @@ const addDepartment = () => {
         .prompt([
             {
                 type: 'intput',
-                message: 'What is the name of the new department',
+                message: 'What is the name of the new department?',
                 name: "newdepartment"
             }
         ]).then(data => {
@@ -98,16 +101,16 @@ const addRole = () => {
         .prompt([
             {
                 type: 'intput',
-                message: 'What is the name of the new role',
+                message: 'What is the name of the new role?',
                 name: "newrole"
             },
             {
                 type: 'intput',
-                message: `What is the salary of ${role}`,
+                message: `What is the salary of this role?`,
             },
             {
                 type: 'intput',
-                message: `What department does ${role} belong to?`,
+                message: `What department does this role belong to?`,
             },
         ]).then(data => {
             const newrole = {
@@ -125,15 +128,15 @@ const addEmployee = () => {
         .prompt([
             {
                 type: 'intput',
-                message: 'What is the first and last name of the new employee',
+                message: 'What is the first and last name of the new employee?',
             },
             {
                 type: 'intput',
-                message: `What is ${employee}'s role`,
+                message: `What is their role?`,
             },
             {
                 type: 'intput',
-                message: `Who is ${employee}'s manager`,
+                message: `Who is their manager?`,
             },
         ]).then(data => {
             const newemployee = {
@@ -147,27 +150,30 @@ const addEmployee = () => {
 
 
 
-const updateanemployee = () => {
+// const updateanemployee = () => {
 
-db.query("SELECT * FROM employee", (err, res) => {
-    // console.log(res);
+// db.query("SELECT * FROM employee", (err, res) => {
+//     // console.log(res);
 
-    const allEmployees = res.map(({ id, first_name, last_name }) => ({
-        name: `${first_name} ${last_name}`,
-        value: id
-    }));
-    inquirer
-        .prompt([
-            {
-                type: 'list',
-                message: 'Which employee would you like to update?',
-                choices: allEmployees,
-                name: updateemployee,
-                console.table(allEmployees)
-                //why is it red?
-            }
-        ])
-}
-)
-
-}
+//     const allEmployees = res.map(({ id, first_name, last_name }) => ({
+//         name: `${first_name} ${last_name}`,
+//         value: id
+//     }));
+//     inquirer
+//         .prompt([
+//             {
+//                 type: 'list',
+//                 message: 'Which employee would you like to update?',
+//                 choices: allEmployees,
+//                 name: updateemployee,
+//                 console.table(allEmployees)
+//                 //why is it red?
+//                 // how do i clear tables after every function call? currently they are all stacking
+//                 // add a role not working
+//                 // add an employee not working
+//                 // view employee is not working
+//             }
+//         ])
+// }
+// )
+// }
