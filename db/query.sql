@@ -1,6 +1,16 @@
+
+
+-- department table
 SELECT *
-FROM course_names
-JOIN department ON course_names.department = department.id;
+FROM department
 
 
-SELECT * FROM payments when payments > 5000 
+-- roles table
+SELECT *
+FROM roles
+JOIN department ON roles.department_id = department.department_id;
+
+-- employee table
+SELECT *
+FROM employee
+JOIN employee ON employee.manager_id = employee.id;
