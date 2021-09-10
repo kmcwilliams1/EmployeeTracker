@@ -36,7 +36,7 @@ const initialPrompt = () => {
                 case "view all roles":
                     viewallroles();
                     break;
-                case "view all roles":
+                case "view all employees":
                     viewallemployees();
                     break;
                 case "add a department":
@@ -47,6 +47,9 @@ const initialPrompt = () => {
                     break;
                 case "add an employee":
                     addEmployee();
+                    break;
+                case "update an employee role":
+                    updateanemployee();
                     break;
                 default:
                     break;
@@ -81,7 +84,7 @@ const addDepartment = () => {
     inquirer
         .prompt([
             {
-                type: 'intput',
+                type: 'input',
                 message: 'What is the name of the new department?',
                 name: "newdepartment"
             }
@@ -95,22 +98,24 @@ const addDepartment = () => {
         })
 }
 
-// how to add string interpolation? answer: dont!
+// how to add string interpolation?
 const addRole = () => {
     inquirer
         .prompt([
             {
-                type: 'intput',
+                type: 'input',
                 message: 'What is the name of the new role?',
                 name: "newrole"
             },
             {
-                type: 'intput',
+                type: 'input',
                 message: `What is the salary of this role?`,
+                name: "newrolesalary"
             },
             {
-                type: 'intput',
+                type: 'input',
                 message: `What department does this role belong to?`,
+                name: "newroledepartment"
             },
         ]).then(data => {
             const newrole = {
@@ -127,20 +132,31 @@ const addEmployee = () => {
     inquirer
         .prompt([
             {
-                type: 'intput',
-                message: 'What is the first and last name of the new employee?',
+                type: 'input',
+                message: 'What is the first name of the new employee?',
+                name: "firstname"
             },
             {
-                type: 'intput',
+                type: 'input',
+                message: 'What is the last name of the new employee?',
+                name: "lastname"
+            },
+            {
+                type: 'input',
                 message: `What is their role?`,
+                name: "newemployeerole"
             },
             {
-                type: 'intput',
+                type: 'input',
                 message: `Who is their manager?`,
+                name: "newemployeemanager"
             },
         ]).then(data => {
             const newemployee = {
-                name: data.newemployee,
+                first_name: data.first_name,
+                last_name: data.last_name,
+                role_id: data.role_id,
+                manager_id: data.manager_id
             }
             db.query('INSERT INTO employee SET ?', newemployee, function (err, results) {
                 initialPrompt();
@@ -150,30 +166,27 @@ const addEmployee = () => {
 
 
 
-// const updateanemployee = () => {
+const updateanemployee = () => {
 
-// db.query("SELECT * FROM employee", (err, res) => {
-//     // console.log(res);
+    db.query("SELECT * FROM employee", (err, res) => {
+        // console.log(res);
 
-//     const allEmployees = res.map(({ id, first_name, last_name }) => ({
-//         name: `${first_name} ${last_name}`,
-//         value: id
-//     }));
-//     inquirer
-//         .prompt([
-//             {
-//                 type: 'list',
-//                 message: 'Which employee would you like to update?',
-//                 choices: allEmployees,
-//                 name: updateemployee,
-//                 console.table(allEmployees)
-//                 //why is it red?
-//                 // how do i clear tables after every function call? currently they are all stacking
-//                 // add a role not working
-//                 // add an employee not working
-//                 // view employee is not working
-//             }
-//         ])
-// }
-// )
-// }
+        const allEmployees = res.map(({ id, first_name, last_name }) => ({
+            name: `${first_name} ${last_name}`,
+            value: id
+        }));
+        inquirer
+            .prompt([
+                {
+                    type: 'list',
+                    message: 'Which employee would you like to update?',
+                    choices: allEmployees,
+                    name: updateemployee,
+                    // how do i clear tables after every function call? currently they are all stacking
+                }
+
+            ])
+        console.table(allEmployees)
+    }
+    )
+}
