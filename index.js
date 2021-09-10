@@ -119,7 +119,9 @@ const addRole = () => {
             },
         ]).then(data => {
             const newrole = {
-                name: data.newrole,
+                role_title = data.role_title,
+                department_id = data.department_id,
+                salary = data.salary
             }
             db.query('INSERT INTO roles SET ?', newrole, function (err, results) {
                 initialPrompt();
