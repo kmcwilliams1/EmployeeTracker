@@ -15,5 +15,5 @@ To replicate:
 
 
 a gif can be found within the files to help with the process. 
-
+    
 github link: https://github.com/kmcwilliams1/EmployeeTracker    
