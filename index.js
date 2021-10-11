@@ -118,10 +118,11 @@ const addRole = () => {
                 name: "newroledepartment"
             },
         ]).then(data => {
+
             const newrole = {
-                role_title = data.role_title,
-                department_id = data.department_id,
-                salary = data.salary
+                role_title : data.newrole,
+                department_id : data.newrolesalary,
+                salary : data.newroledepartment
             }
             db.query('INSERT INTO roles SET ?', newrole, function (err, results) {
                 initialPrompt();
@@ -155,10 +156,10 @@ const addEmployee = () => {
             },
         ]).then(data => {
             const newemployee = {
-                first_name: data.first_name,
-                last_name: data.last_name,
-                role_id: data.role_id,
-                manager_id: data.manager_id
+                first_name: data.firstname,
+                last_name: data.lastname,
+                role_id: data.newemployeerole,
+                manager_id: data.newemployeemanager
             }
             db.query('INSERT INTO employee SET ?', newemployee, function (err, results) {
                 initialPrompt();
@@ -173,21 +174,28 @@ const updateanemployee = () => {
     db.query("SELECT * FROM employee", (err, res) => {
         // console.log(res);
 
-        const allEmployees = res.map(({ id, first_name, last_name }) => ({
-            name: `${first_name} ${last_name}`,
-            value: id
-        }));
+
         inquirer
             .prompt([
                 {
                     type: 'list',
                     message: 'Which employee would you like to update?',
-                    choices: allEmployees,
-                    name: updateemployee,
-                    // how do i clear tables after every function call? currently they are all stacking
+                    choices: employee.map(employee => ({name:`${employee.first_name} ${employee.last_name}`, value: employee.id})),
+                    name: "getallEmployees",
+                },
+                {
+                    type: 'input',
+                    message: `What is their new role?`,
+                    name: "employeenewerole"
                 }
-
-            ])
+            ]).then(data => {
+                const updateemployee = {
+                    employeenewrole:  data.employeenewrole,
+                }
+                db.query('INSERT INTO employee SET ?', updateemployee, function (err, results) {
+                    initialPrompt();
+                });
+            })
         console.table(allEmployees)
     }
     )
